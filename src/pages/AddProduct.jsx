@@ -347,17 +347,5 @@ const styles = {
         objectFit: "cover",
         borderRadius: "8px",
         border: "1px solid #ccc",
-    },
-    label: {
-        fontSize: "14px",
-        fontWeight: "600",
-        color: "#333",
-    },
-    heading: {
-        textAlign: "center",
-        fontSize: "24px",
-        fontWeight: "700",
-        marginBottom: "30px",
-        color: "#222",
-    },
+    }
 };

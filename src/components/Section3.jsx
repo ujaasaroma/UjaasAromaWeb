@@ -13,7 +13,7 @@ export default function Section3() {
                 className="d-flex justify-content-center align-items-center section3-col"
                 style={{ gap: "15px" }}
             >
-                {/* First Image Card */}
+                {/* First Image Card */} 
                 <div className="image-card">
                     <Image src={textimg1} className="background-img" />
                     <div className="overlay-content">

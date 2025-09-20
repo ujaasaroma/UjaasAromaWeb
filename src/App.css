@@ -44,3 +44,11 @@
   color: #888;
 }
 
+
+.modal-content {
+  background-color: transparent!important;
+  border: 25px groove silver!important;
+}
+.modal-body{
+  padding: 0!important;
+}

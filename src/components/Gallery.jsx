@@ -3,7 +3,6 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Image from "react-bootstrap/Image";
 import Modal from "react-bootstrap/Modal";
-
 import gallery from "../data/gallery.json";
 
 export default function Gallery() {
@@ -54,13 +53,12 @@ export default function Gallery() {
 
       {/* Modal for full image */}
       <Modal show={show} onHide={handleClose} centered size="lg">
-        <Modal.Body className="d-flex justify-content-center">
+        <Modal.Body>
           {selectedImg && (
             <Image
               src={selectedImg.src}
               alt={selectedImg.alt}
               fluid
-              style={{ maxHeight: "70vh", objectFit: "contain" }}
             />
           )}
         </Modal.Body>

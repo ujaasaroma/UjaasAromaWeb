@@ -19,14 +19,14 @@ export default function Shop() {
                         Default
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                        <Dropdown.Item>Price: Low to High</Dropdown.Item>
+                        <Dropdown.Item>Price: Low to High</Dropdown.Item> 
                         <Dropdown.Item>Price: High to Low</Dropdown.Item>
                         <Dropdown.Item>Newest</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </Col>
             <Col>
-                <Row className="m-0 shop-display-row">
+                <Row className="m-0 shop-display-row"> 
                     {products.map((product) => (
                         <Col key={product.id} className='shop-product-col'>
                             <div className="product-card">
