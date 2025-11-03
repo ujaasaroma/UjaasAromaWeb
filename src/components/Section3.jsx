@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import textimg1 from '../assets/images/text-img1.jpg';
 import textimg2 from '../assets/images/text-img2.jpg';
-import '../styles/Section3.css';
+import './styles/Section3.css';
 import { Link } from "react-router-dom";
 
 export default function Section3() {

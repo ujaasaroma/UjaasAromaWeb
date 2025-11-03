@@ -1,0 +1,158 @@
+/* 🖤 Top Black Bar */
+.top-bar {
+    background-color: #000;
+    color: #fff;
+    font-size: 11px;
+    padding: 6px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.top-bar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* max-width: 1400px; */
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+
+.top-bar .email {
+    color: #c9c9c9;
+}
+
+.top-bar .promo {
+    font-weight: 500;
+}
+
+.top-bar .account {
+    color: #c9c9c9;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ⚪ Main Navbar */
+.main-navbar {
+    background: #fff;
+    width: 100%;
+    height: 120px;
+    /* padding: 0 15%; */
+    border-bottom: 1px solid #e5e5e5;
+    /* box-shadow: rgba(0, 0, 0, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
+}
+
+.nav-left {
+    width: 33.3%;
+    height: 100%;
+}
+
+/* Left Nav Links */
+.nav-link-custom {
+    color: #000 !important;
+    font-size: 12px;
+    text-decoration: none;
+    letter-spacing: 0.2em;
+    padding: 0;
+    font-family: "Work sans", sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.nav-left .nav-link-custom:hover,
+.nav-left .nav-link-custom.active {
+    /* color: #000 !important; */
+    position: relative;
+    line-height: 1.5em;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    transition: background-size .4s cubic-bezier(.22, .61, .36, 1);
+    background-position: 0 100%;
+    background-size: 0 1px;
+}
+
+.nav-left .nav-link-custom.active::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 20px;
+    background: #000;
+    margin: 4px auto 0;
+}
+
+.main-logo-class {
+    width: 33.33%;
+    height: 100%;
+
+}
+
+/* Center Logo */
+.main-logo {
+    width: 180px;
+    height: auto;
+    object-fit: contain;
+}
+
+.logo-tagline {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #aaa;
+    margin-top: 6px;
+    text-align: center;
+}
+
+.nav-icons {
+    width: 33.33%;
+    height: 100%;
+}
+.nav-icons>span{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 40px;
+}
+
+/* Right Icons */
+.nav-icons .icon {
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-family: "Work sans", sans-serif;
+    font-size: 18px;
+    line-height: 1.66em;
+    font-weight: 400;
+    color: #707070;
+    background-color: #fff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.nav-icons .icon:hover {
+    transform: scale(1.1);
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 992px) {
+    .main-navbar {
+        padding: 15px 30px;
+    }
+
+    .nav-left {
+        display: none !important;
+    }
+
+    .nav-icons {
+        margin-left: auto;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .top-bar-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 4px;
+        font-size: 12px;
+    }
+}

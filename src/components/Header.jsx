@@ -1,122 +1,64 @@
 import { useState } from "react";
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Nav from 'react-bootstrap/Nav';
-import Image from 'react-bootstrap/Image';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import logo from '../assets/images/logo.png';
-import '../styles/Header.css';
-import { IoBagOutline, IoBagSharp } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Image, Offcanvas } from "react-bootstrap";
+import { IoHeartOutline, IoBagOutline, IoSearch, IoMenu } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import "./styles/Header.css";
+
+const logoUrl =
+    "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
 
 export default function Header() {
-    const [expanded, setExpanded] = useState(false);
     const [showCart, setShowCart] = useState(false);
-
     const handleClose = () => setShowCart(false);
     const handleShow = () => setShowCart(true);
 
     return (
-        <div className="sticky-top bg-white border-bottom">
-            <Row className='m-0 p-0'>
-                <Col className="text-white p-2 text-center text-uppercase top-tab">
-                    Enjoy special discounts on our candles!
-                </Col>
-            </Row>
-            <Row className='m-0 p-0'>
-                <Col className="text-black text-center d-flex flex-row align-items-center header-navigation-col">
-                    <Link to="/"><Image src={logo} rounded className="logo-small" /></Link>
+        <header className="ujaas-header">
+            {/* 🔹 Top Black Bar */}
+            <div className="top-bar">
+                <div className="top-bar-content">
+                    <span className="email">orders@ujaasaroma.com</span>
+                    <span className="promo">free shipping on orders over &#8377; 2500</span>
+                    <span className="account">My Account <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                    </svg></span>
+                </div>
+            </div>
 
-                    <Nav className="align-items-center justify-content-center p-4 nav-tab" activeKey="/">
-                        <Nav.Item>
-                            <Nav.Link href="/" className='text-black'>Home</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link href='/shop' className='text-black'>Shop</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="link-2" className='text-black'>About</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Nav.Link eventKey="link-3" className='text-black'>Contact</Nav.Link>
-                        </Nav.Item>
-                        <Nav.Item className='ms-4'>
-                            <Nav.Link
-                                eventKey="link-4"
-                                className='text-black'
-                                onClick={handleShow}   // <-- OPEN OFFCANVAS
-                            >
-                                {showCart ? (
-                                    <IoBagSharp style={{ width: '2em', height: '2em' }} />
-                                ) :
-                                    (
-                                        <IoBagOutline style={{ width: '2em', height: '2em' }} />
-                                    )}
+            {/* 🔹 Main Navbar */}
+            <div className="main-navbar m-0 d-flex align-items-center justify-content-between">
+                <div className="d-flex align-items-center justify-content-end column-gap-5 nav-left">
+                    <Link to="/" className="nav-link-custom">HOME</Link>
+                    <Link to="/shop" className="nav-link-custom">ShOP</Link>
+                    <Link to="/about-us" className="nav-link-custom">ABOUT US</Link>
+                    <Link to="/contact" className="nav-link-custom">Contact</Link>
+                </div>
 
-                            </Nav.Link>
-                        </Nav.Item>
-                    </Nav>
+                {/* Center Logo */}
+                <div className="main-logo-class d-flex justify-content-center align-items-center">
+                    <Link to="/">
+                        <Image src={logoUrl} alt="Ujaas Aroma" className="main-logo" />
+                    </Link>
+                </div>
 
-                    {/* Mobile icons (hamburger, etc.) */}
-                    <div className="w-25 d-flex justify-content-between align-items-center d-lg-none">
-                        {showCart ? (
-                            <IoBagSharp style={{ width: '2em', height: '2em' }} onClick={handleShow} />
-                        ) :
-                            (
-                                <IoBagOutline style={{ width: '2em', height: '2em' }} onClick={handleShow} />
-                            )}
+                {/* Right-side Icons */}
+                <div className="d-flex align-items-center justify-content-center column-gap-3 nav-icons">
+                    <span><IoHeartOutline className="icon" title="Wishlist" /><small>(0)</small></span>
+                    <span><IoBagOutline className="icon" title="Cart" onClick={handleShow} /><small>(0)</small></span>
+                    <span><IoSearch className="icon" title="Search" /></span>
+                    <span><IoMenu className="icon" title="Menu" /></span>
+                </div>
+            </div>
 
-                        <button
-                            className="border-0 bg-transparent "
-                            onClick={() => setExpanded(expanded ? false : true)}
-                        >
-                            {expanded ? (
-                                // Close icon (X)
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 
-                                    7.293l2.646-2.647a.5.5 0 0 1 
-                                    .708.708L8.707 8l2.647 
-                                    2.646a.5.5 0 0 1-.708.708L8 
-                                    8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 
-                                    8 4.646 5.354a.5.5 0 0 1 
-                                    0-.708" />
-                                </svg>
-                            ) : (
-                                // Hamburger icon
-                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fillRule="evenodd" d="M1.5 12.5a.5.5 
-                                    0 0 1 0-1h13a.5.5 0 0 1 0 
-                                    1h-13zm0-4a.5.5 0 0 1 
-                                    0-1h13a.5.5 0 0 1 0 
-                                    1h-13zm0-4a.5.5 0 0 1 
-                                    0-1h13a.5.5 0 0 1 0 
-                                    1h-13z" />
-                                </svg>
-                            )}
-                        </button>
-                    </div>
-                </Col>
-            </Row>
-
-            {/* OFFCANVAS */}
+            {/* 🛍 Offcanvas Cart */}
             <Offcanvas show={showCart} onHide={handleClose} placement="end">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Shopping Bag</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    <p>Shopping Bag is empty 🛒</p>
+                    <p>Your bag is empty 🛒</p>
                 </Offcanvas.Body>
             </Offcanvas>
-
-            {/* Mobile Dropdown Menu (Overlay) */}
-            <div className={`mobile-dropdown ${expanded ? "open" : "close"}`}>
-                <Nav className="flex-column p-4 text-end">
-                    <Nav.Link as={Link} to="/">Home</Nav.Link>
-                    <Nav.Link as={Link} to="/shop">Shop</Nav.Link>
-                    <Nav.Link as={Link} to="/about">About</Nav.Link>
-                    <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
-                </Nav>
-            </div>
-        </div>
+        </header>
     );
 }

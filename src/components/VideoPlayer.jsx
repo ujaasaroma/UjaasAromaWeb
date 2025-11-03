@@ -9,7 +9,7 @@ import main4 from "../assets/videos/main4.mp4";
 import main5 from "../assets/videos/main5.mp4";
 import main6 from "../assets/videos/main6.mp4";
 import main7 from "../assets/videos/main7.mp4";
-import '../styles/VideoPlayer.css';
+import './styles/VideoPlayer.css';
 
 export default function VideoPlayer() {
     const videos = [

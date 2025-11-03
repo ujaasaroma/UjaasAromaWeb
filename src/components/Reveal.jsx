@@ -1,6 +1,6 @@
 // src/components/Reveal.jsx
 import { useInView } from "react-intersection-observer";
-import "../styles/Reveal.css";
+import "./styles/Reveal.css";
 
 export default function Reveal({ children }) {
   const { ref, inView } = useInView({

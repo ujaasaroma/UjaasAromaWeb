@@ -11,7 +11,7 @@ import Reveal from "../components/Reveal";
 
 export default function HomePage() {
     return (
-        <Container fluid className="p-0 m-0">
+        <Container style={{width:'100%', maxWidth:'100%', padding:0, margin:0}}>
             <Header />
 
             <Reveal>

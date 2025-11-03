@@ -1,0 +1,133 @@
+/* 🌑 Overall Layout */
+.subscription-banner {
+  background-color: #000;
+  color: #fff;
+  padding: 100px 50px;
+  overflow: hidden;
+  position: relative;
+}
+
+.subscription-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at left,
+    rgba(255, 196, 0, 0.08),
+    transparent 70%
+  );
+}
+
+/* 🕯 Candle Image Styling */
+.image-circle {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #222 30%, #000 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 0 25px rgba(255, 191, 0, 0.2);
+}
+
+.candle-image {
+  width: 85%;
+  height: 85%;
+  border-radius: 50%;
+  object-fit: contain;
+  border: 10px groove #ffb800;
+  transition: transform 3s ease;
+}
+
+.image-circle:hover .candle-image {
+  transform: scale(1.5);
+}
+
+/* ✨ Right Content */
+.subscription-title {
+  font-family: "Outfit", sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.subscription-subtext {
+  color: #ccc;
+  font-size: 1rem;
+  margin-top: 10px;
+  max-width: 480px;
+  line-height: 1.6;
+}
+
+/* 📩 Input + Button */
+.subscription-form {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+}
+
+.subscription-input {
+  flex: 1;
+  padding: 15px 20px;
+  font-size: 1rem;
+  border: none;
+  border-bottom: 1px solid #555;
+  border-radius: 0;
+  background-color: transparent;
+  color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.subscription-input::placeholder {
+  color: #777;
+}
+
+.subscription-input:focus {
+  border-color: #ffb800;
+  outline: none;
+}
+
+.subscription-btn {
+  background: #ffb800;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 12px 30px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  border-radius: 0;
+  margin-left: 10px;
+}
+
+.subscription-btn:hover {
+  background: #ffc832;
+  transform: translateY(-2px);
+}
+
+/* 📱 Responsive */
+@media screen and (max-width: 992px) {
+  .subscription-banner {
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .image-circle {
+    width: 220px;
+    height: 220px;
+    margin-bottom: 40px;
+  }
+
+  .subscription-form {
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .subscription-btn {
+    margin-left: 0;
+    margin-top: 12px;
+    width: 100%;
+  }
+}
