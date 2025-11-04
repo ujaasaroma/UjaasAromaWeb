@@ -5,17 +5,16 @@
   padding: 100px 50px;
   overflow: hidden;
   position: relative;
+  border: 20px groove #eee;
 }
 
 .subscription-banner::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    circle at left,
-    rgba(255, 196, 0, 0.08),
-    transparent 70%
-  );
+  background: radial-gradient(circle at left,
+      rgba(255, 196, 0, 0.08),
+      transparent 70%);
 }
 
 /* 🕯 Candle Image Styling */
@@ -31,17 +30,35 @@
   box-shadow: 0 0 25px rgba(255, 191, 0, 0.2);
 }
 
+.candle-image-circle {
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  border: 10px groove #ffb800;
+  animation: spinBorder 5s linear infinite;
+}
+
 .candle-image {
   width: 85%;
   height: 85%;
-  border-radius: 50%;
   object-fit: contain;
-  border: 10px groove #ffb800;
   transition: transform 3s ease;
+  z-index: 9;
+}
+
+@keyframes spinBorder {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .image-circle:hover .candle-image {
-  transform: scale(1.5);
+  transform: scale(2.2);
 }
 
 /* ✨ Right Content */

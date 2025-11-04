@@ -1,3 +1,6 @@
+.section3-row{
+    background-color: #000;
+}
 .section3-col {
     flex-direction: row;
 }

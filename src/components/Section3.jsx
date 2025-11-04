@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function Section3() {
     return (
-        <Row className="m-0 p-5 text-center">
+        <Row className="m-0 p-5 text-center section3-row">
             <Col
                 className="d-flex justify-content-center align-items-center section3-col"
                 style={{ gap: "15px" }}

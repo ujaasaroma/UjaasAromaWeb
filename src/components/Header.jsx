@@ -30,7 +30,7 @@ export default function Header() {
                 <div className="d-flex align-items-center justify-content-end column-gap-5 nav-left">
                     <Link to="/" className="nav-link-custom">HOME</Link>
                     <Link to="/shop" className="nav-link-custom">ShOP</Link>
-                    <Link to="/about-us" className="nav-link-custom">ABOUT US</Link>
+                    <Link to="/about" className="nav-link-custom">ABOUT US</Link>
                     <Link to="/contact" className="nav-link-custom">Contact</Link>
                 </div>
 

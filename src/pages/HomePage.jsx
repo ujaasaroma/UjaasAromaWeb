@@ -1,5 +1,5 @@
 import Container from "react-bootstrap/Container";
-import "../styles/HomePage.css";
+import "./styles/HomePage.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Gallery from "../components/Gallery";

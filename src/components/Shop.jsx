@@ -29,7 +29,7 @@ export default function Shop() {
     return <div className="text-center mt-5 text-danger">Error: {error}</div>;
 
   return (
-    <Row className="p-0 m-0 flex-column justify-content-center align-items-center shop-row">
+    <Row className="m-0 flex-column justify-content-center align-items-center shop-row">
       <Col className="products-sorting">
         <span className="me-2">Sort by:</span>
         <Dropdown>
@@ -41,10 +41,10 @@ export default function Shop() {
             {sortOption === "lowToHigh"
               ? "Price: Low to High"
               : sortOption === "highToLow"
-              ? "Price: High to Low"
-              : sortOption === "newest"
-              ? "Newest"
-              : "Default"}
+                ? "Price: High to Low"
+                : sortOption === "newest"
+                  ? "Newest"
+                  : "Default"}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => handleSortChange("default")}>
@@ -65,28 +65,29 @@ export default function Shop() {
 
       <Col>
         <Row className="m-0 shop-display-row">
-          {loading
-            ? Array.from({ length: 4 }).map((_, i) => (
-                <Col key={i} className="shop-product-col">
-                  <ProductCardSkeleton />
-                </Col>
+          <div className="shop-product-col">
+            {loading
+              ? Array.from({ length: 4 }).map((_, i) => (
+
+                <ProductCardSkeleton key={i} />
               ))
-            : products.map((product) => (
-                <Col key={product.id} className="shop-product-col">
-                  <div className="product-card">
-                    <div className="product-img-wrapper">
-                      <Image
-                        src={product.images?.[0]}
-                        alt={product.title}
-                        className="image-hover"
-                      />
-                      {product.ribbon && (
-                        <span className="product-tag">{product.ribbon}</span>
-                      )}
-                    </div>
-                    <div className="product-info">
-                      <p className="product-name fw-bold">{product.title}</p>
-                      <p className="product-price">
+              : products.map((product) => (
+
+                <div key={product.id} className="product-card">
+                  <div className="product-img-wrapper">
+                    <Image
+                      src={product.images?.[0]}
+                      alt={product.title}
+                      className="image-hover"
+                    />
+                    {product.ribbon && (
+                      <span className="product-tag">{product.ribbon}</span>
+                    )}
+                  </div>
+                  <div className="product-info">
+                    <p className="product-name fw-bold">{product.title}</p>
+                    <p className="product-price">
+                      <span>
                         {product.discountPrice ? (
                           <>
                             <span className="old-price me-2">
@@ -101,11 +102,14 @@ export default function Shop() {
                             ₹{product.price.toFixed(2)}
                           </span>
                         )}
-                      </p>
-                    </div>
+                      </span>
+                      <span className="product-cart">🛒</span>
+                    </p>
                   </div>
-                </Col>
+                </div>
               ))}
+
+          </div>
         </Row>
       </Col>
     </Row>
