@@ -12,6 +12,7 @@ import {
 } from "../features/productsSlice";
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
 import "./styles/Shop.css";
+import { Link } from "react-router-dom";
 
 export default function Shop() {
   const dispatch = useDispatch();
@@ -73,40 +74,42 @@ export default function Shop() {
               ))
               : products.map((product) => (
 
-                <div key={product.id} className="product-card">
-                  <div className="product-img-wrapper">
-                    <Image
-                      src={product.images?.[0]}
-                      alt={product.title}
-                      className="image-hover"
-                    />
-                    {product.ribbon && (
-                      <span className="product-tag">{product.ribbon}</span>
-                    )}
-                  </div>
-                  <div className="product-info">
-                    <p className="product-name fw-bold">{product.title}</p>
-                    <p className="product-price">
-                      <span>
-                        {product.discountPrice ? (
-                          <>
-                            <span className="old-price me-2">
+                <Link to={`/product/${product.id}`} style={{textDecoration:'none'}}>
+                  <div key={product.id} className="product-card">
+                    <div className="product-img-wrapper">
+                      <Image
+                        src={product.images?.[0]}
+                        alt={product.title}
+                        className="image-hover"
+                      />
+                      {product.ribbon && (
+                        <span className="product-tag">{product.ribbon}</span>
+                      )}
+                    </div>
+                    <div className="product-info">
+                      <p className="product-name fw-bold">{product.title}</p>
+                      <p className="product-price">
+                        <span>
+                          {product.discountPrice ? (
+                            <>
+                              <span className="old-price me-2">
+                                ₹{product.price.toFixed(2)}
+                              </span>
+                              <span className="new-price fw-bold text-success">
+                                ₹{product.discountPrice.toFixed(2)}
+                              </span>
+                            </>
+                          ) : (
+                            <span className="new-price fw-bold">
                               ₹{product.price.toFixed(2)}
                             </span>
-                            <span className="new-price fw-bold text-success">
-                              ₹{product.discountPrice.toFixed(2)}
-                            </span>
-                          </>
-                        ) : (
-                          <span className="new-price fw-bold">
-                            ₹{product.price.toFixed(2)}
-                          </span>
-                        )}
-                      </span>
-                      <span className="product-cart">🛒</span>
-                    </p>
+                          )}
+                        </span>
+                        <span className="product-cart">🛒</span>
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
 
           </div>

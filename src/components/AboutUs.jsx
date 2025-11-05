@@ -1,5 +1,6 @@
 import React from "react";
 import "./styles/AboutUs.css";
+import { Link } from "react-router-dom";
 
 const candleImage =
   "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1440,h=1430,fit=crop/mnl4XxlxxBH1206z/whatsapp-image-2025-08-27-at-15.31.46_e02c6c13-YX4jO6Jwa9U6wRzN.jpg";
@@ -17,7 +18,7 @@ export default function AboutUs() {
             India. We provide a wide range of shapes, sizes, and fragrances
             suitable for any occasion.
           </p>
-          <button className="primary-btn">Let's take a look at the products</button>
+          <Link to="/shop" className="primary-btn">Let's take a look at the products</Link>
         </div>
 
         <div className="about-hero-image">

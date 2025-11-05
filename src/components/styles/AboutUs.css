@@ -52,6 +52,7 @@
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
+  text-decoration: none;
   box-shadow: 0 6px 16px rgba(176, 139, 110, 0.25);
   transition: all 0.3s ease;
 }
