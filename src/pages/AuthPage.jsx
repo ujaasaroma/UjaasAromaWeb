@@ -1,7 +1,7 @@
+import Authorization from "../components/Authorization";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import Reveal from "../components/Reveal";
-import Authorization from "../components/Authorization";
 
 export default function AuthPage() {
     return (

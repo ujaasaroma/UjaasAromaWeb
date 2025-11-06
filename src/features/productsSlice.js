@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getFirestore, collection, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot, query, orderBy } from "firebase/firestore";
 
 let unsubscribeProducts = null;
 
@@ -37,9 +37,10 @@ export const startProductsListener = () => (dispatch) => {
   dispatch(setLoading(true));
 
   const colRef = collection(db, "products");
+  const q = query(colRef, orderBy("createdAt", "desc"));
 
   unsubscribeProducts = onSnapshot(
-    colRef,
+    q,
     (snapshot) => {
       const items = snapshot.docs
         .map((doc) => ({

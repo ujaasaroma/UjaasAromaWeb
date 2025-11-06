@@ -13,6 +13,7 @@ import {
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
 import "./styles/Shop.css";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/esm/Button";
 
 export default function Shop() {
   const dispatch = useDispatch();
@@ -74,8 +75,8 @@ export default function Shop() {
               ))
               : products.map((product) => (
 
-                <Link to={`/product/${product.id}`} style={{textDecoration:'none'}}>
-                  <div key={product.id} className="product-card">
+                <Link key={product.id} to={`/product/${product.id}`} style={{ textDecoration: 'none' }}>
+                  <div className="product-card">
                     <div className="product-img-wrapper">
                       <Image
                         src={product.images?.[0]}
@@ -88,6 +89,7 @@ export default function Shop() {
                     </div>
                     <div className="product-info">
                       <p className="product-name fw-bold">{product.title}</p>
+                      <p className="product-subtitle fw-bold">{product.subtitle}</p>
                       <p className="product-price">
                         <span>
                           {product.discountPrice ? (
@@ -105,7 +107,7 @@ export default function Shop() {
                             </span>
                           )}
                         </span>
-                        <span className="product-cart">🛒</span>
+                        {/* <Button variant="light" className=" product-cart" onClick={() => dispatch(addToCart(product))}>🛒</Button> */}
                       </p>
                     </div>
                   </div>
