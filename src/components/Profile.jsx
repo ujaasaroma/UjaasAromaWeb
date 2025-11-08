@@ -18,6 +18,7 @@ import "./styles/Profile.css";
 import { useNavigate } from "react-router-dom";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { Modal, Button, Image } from "react-bootstrap";
+import ProfileSkeleton from "../components/ProfileSkeleton";
 
 export default function Profile() {
   const { user } = useSelector((state) => state.user);
@@ -167,10 +168,7 @@ export default function Profile() {
 
   if (loading) {
     return (
-      <div className="profile-loading">
-        <div className="spinner" />
-        <p>Loading profile...</p>
-      </div>
+      <ProfileSkeleton />
     );
   }
 
@@ -215,10 +213,10 @@ export default function Profile() {
         <div className="d-flex flex-column justify-content-between align-items-start mb-1">
           <h3>My Orders</h3>
           <div className="sorted-buttons d-flex align-items-center justify-content-end">
-            <Button variant={filterStatus === "all" ? "dark" : "light"} onClick={() => handleFilterChange('all')} >All Orders</Button>
-            <Button variant={filterStatus === "processing" ? "dark" : "light"} onClick={() => handleFilterChange('processing')}>Processing</Button>
-            <Button variant={filterStatus === "delivered" ? "dark" : "light"} onClick={() => handleFilterChange('delivered')}>Delivered</Button>
-            <Button variant={filterStatus === "cancelled" ? "dark" : "light"} onClick={() => handleFilterChange('cancelled')}>Cancelled</Button>
+            <Button variant={filterStatus === "all" ? "dark" : "light"} onClick={() => handleFilterChange('all')} ><text style={{ color: filterStatus === "all" ? "green" : "red" }}>⬤</text> All Orders</Button>
+            <Button variant={filterStatus === "processing" ? "dark" : "light"} onClick={() => handleFilterChange('processing')}><text style={{ color: filterStatus === "processing" ? "green" : "red" }}>⬤</text> Processing</Button>
+            <Button variant={filterStatus === "delivered" ? "dark" : "light"} onClick={() => handleFilterChange('delivered')}><text style={{ color: filterStatus === "delivered" ? "green" : "red" }}>⬤</text> Delivered</Button>
+            <Button variant={filterStatus === "cancelled" ? "dark" : "light"} onClick={() => handleFilterChange('cancelled')}><text style={{ color: filterStatus === "cancelled" ? "green" : "red" }}>⬤</text> Cancelled</Button>
           </div>
         </div>
 
