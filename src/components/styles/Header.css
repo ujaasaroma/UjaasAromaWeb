@@ -118,7 +118,7 @@
 
 /* Right Icons */
 .nav-icons .icon {
-    cursor: pointer;
+    cursor: pointer; 
     transition: 0.3s ease;
     font-family: "Work sans", sans-serif;
     font-size: 18px;
@@ -146,10 +146,60 @@
     opacity: 0.8;
 }
 
+.logout-btn>i{
+    font-size: 12px;
+}
+
+.account-dropdown {
+    position: relative;
+    cursor: pointer;
+    background: #000;
+}
+
+.accdropdown {
+    position: absolute;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+    background: #fff;
+    padding: 10px;
+    z-index: 9;
+    border-radius: 30px 0;
+    width: 250px;
+    right: 20px;
+    top: 35px;
+    text-align: center;
+}
+.accdropdown>p:first-child {
+    border-bottom: 5px solid #eee;
+    padding: 10px 0;
+    cursor: not-allowed;
+}
+.accdropdown>p:first-child:hover{
+    color: #000;
+}
+
+.accdropdown>p {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.accdropdown>p:last-child{
+    color: coral;
+}
+
+.accdropdown>p:hover{
+    color: coral;
+    font-weight: 600;
+}
+
+
 .display-pic {
     width: 25px;
     height: 25px;
-    border-radius: 50%;
+    border-radius: 20%;
+    object-fit: contain;
 }
 
 /* Responsive Adjustments */
@@ -175,3 +225,4 @@
         font-size: 12px;
     }
 }
+

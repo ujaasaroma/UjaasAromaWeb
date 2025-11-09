@@ -23,7 +23,12 @@ export const store = configureStore({
   preloadedState: persistedCartWishlist
     ? { cartWishlist: persistedCartWishlist }
     : undefined,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
+
 
 // 💾 Subscribe to store changes → save cart/wishlist to localStorage
 store.subscribe(() => {

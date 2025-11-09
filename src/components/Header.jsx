@@ -1,12 +1,15 @@
-// src/components/Header.jsx
 import { useState, useEffect } from "react";
-import { Image, Offcanvas } from "react-bootstrap";
-import { IoHeartOutline, IoBagOutline, IoSearch, IoMenu } from "react-icons/io5";
+import { DropdownButton, Image, Offcanvas, Modal, Button } from "react-bootstrap";
+import { IoHeartOutline, IoBagOutline, IoSearch } from "react-icons/io5";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/userSlice";
+import {
+  removeFromCart,
+  removeFromWishlist,
+} from "../features/cartWishlistSlice";
 import "./styles/Header.css";
 
 const logoUrl =
@@ -14,10 +17,8 @@ const logoUrl =
 
 export default function Header({ bg }) {
   const [showCart, setShowCart] = useState(false);
-  const { user } = useSelector((state) => state.user); 
-  const db = getFirestore(getApp());
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [showWishlist, setShowWishlist] = useState(false);
+  const [accDropDown, setAccDropDown] = useState(false);
   const [profile, setProfile] = useState({
     name: "",
     email: "",
@@ -25,28 +26,37 @@ export default function Header({ bg }) {
     photoURL: "",
   });
 
-  console.log(profile)
+  const { user } = useSelector((state) => state.user);
+  const { cart, wishlist } = useSelector((state) => state.cartWishlist);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const db = getFirestore(getApp());
 
+  // 🧾 Fetch user profile
   useEffect(() => {
     const fetchUser = async () => {
       try {
-       
+        if (!user?.uid) return;
         const ref = doc(db, "users", user.uid);
         const snap = await getDoc(ref);
         if (snap.exists()) setProfile(snap.data());
       } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
+        console.error("Profile fetch error:", e);
       }
     };
     fetchUser();
-  }, [user]);
+  }, [user, db]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/auth");
   };
+
+  // 🧮 Cart total
+  const total = cart.reduce(
+    (sum, i) => sum + (i.price || 0) * (i.quantity || 1),
+    0
+  );
 
   return (
     <header className="ujaas-header">
@@ -58,25 +68,12 @@ export default function Header({ bg }) {
 
           {user ? (
             <button onClick={handleLogout} className="account logout-btn">
-              Logout {' '}
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
-                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
-              </svg>
+              Logout <i className="bi bi-box-arrow-right"></i>
             </button>
           ) : (
             <Link to="/auth" className="account">
               My Account{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-person"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-              </svg>
+              <i className="bi bi-person" style={{ fontSize: 14 }}></i>
             </Link>
           )}
         </div>
@@ -112,40 +109,153 @@ export default function Header({ bg }) {
 
         {/* Right Icons */}
         <div className="d-flex align-items-center justify-content-center column-gap-3 nav-icons">
-          <span>
+          {/* ❤️ Wishlist */}
+          <span onClick={() => setShowWishlist(true)} style={{ cursor: "pointer" }}>
             <IoHeartOutline className="icon" title="Wishlist" />
-            <small>(0)</small>
+            <small>({wishlist.length})</small>
           </span>
+
+          {/* 🛍 Cart */}
           <span>
             <IoBagOutline
               className="icon"
               title="Cart"
               onClick={() => setShowCart(true)}
             />
-            <small>(0)</small>
+            <small>({cart.length})</small>
           </span>
+
+          {/* 🔍 Search */}
           <span>
             <IoSearch className="icon" title="Search" />
           </span>
+
+          {/* 👤 Profile */}
           <span>
-            {user?.uid &&
-              <Link to="/profile">
-                <Image src={profile.photoURL} alt="Display Picture" className="display-pic" />
-              </Link>
-            }
+            {user?.uid && (
+              <div className="account-dropdown">
+                <Image
+                  src={profile.photoURL || "/default-profile.png"}
+                  className="display-pic"
+                  onClick={() => setAccDropDown(!accDropDown)}
+                />
+                {accDropDown && (
+                  <div className="accdropdown">
+                    <p>
+                      <strong>Hey! {profile.name}</strong>
+                    </p>
+                    <p onClick={() => navigate("/account")}>
+                      <small>My Account</small>
+                    </p>
+                    <p onClick={handleLogout}>
+                      <small>Sign Out</small>
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </span>
         </div>
       </div>
 
-      {/* 🛍 Offcanvas Cart */}
+      {/* 🛍 CART Offcanvas */}
       <Offcanvas show={showCart} onHide={() => setShowCart(false)} placement="end">
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Shopping Bag</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <p>Your bag is empty 🛒</p>
+          {cart.length === 0 ? (
+            <p>Your bag is empty 🛒</p>
+          ) : (
+            <div className="cart-items-list">
+              {cart.map((item) => (
+                <div key={item.id} className="cart-item d-flex align-items-center mb-3">
+                  <img
+                    src={item.images}
+                    alt={item.title}
+                    className="cart-item-img me-3"
+                    style={{
+                      width: 60,
+                      height: 60,
+                      objectFit: "contain",
+                      borderRadius: 8,
+                    }}
+                  />
+                  <div className="cart-item-details flex-grow-1">
+                    <h6 className="mb-0 d-flex justify-content-between align-items-center">{item.title} <i className="bi bi-x-circle " onClick={() => dispatch(removeFromCart(item.id))}></i></h6>
+                    <small>₹ {item.discountPrice} X {item.quantity} = {item.discountPrice * item.quantity}</small>
+                  </div>
+                  
+                </div>
+              ))}
+
+              <hr />
+              <div className="d-flex justify-content-between">
+                <strong>Total:</strong>
+                <strong>₹{total.toFixed(2)}</strong>
+              </div>
+              <div className="mt-3 d-flex justify-content-end">
+                <button
+                  className="btn btn-dark"
+                  onClick={() => {
+                    setShowCart(false);
+                    navigate("/checkout");
+                  }}
+                >
+                  Checkout
+                </button>
+              </div>
+            </div>
+          )}
         </Offcanvas.Body>
       </Offcanvas>
+
+      {/* 💖 WISHLIST Modal */}
+      <Modal show={showWishlist} onHide={() => setShowWishlist(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>My Wishlist</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {wishlist.length === 0 ? (
+            <p>No items in wishlist 💔</p>
+          ) : (
+            wishlist.map((item) => (
+              <div
+                key={item.id}
+                className="wishlist-item d-flex align-items-center mb-3"
+                onClick={() => navigate(`/product/${item.id}`)}
+              >
+                <img
+                  src={item.images[0]}
+                  alt={item.title}
+                  style={{
+                    width: 60,
+                    height: 60,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                    marginRight: 10,
+                  }}
+                />
+                <div className="flex-grow-1">
+                  <h6 className="mb-0">{item.title}</h6>
+                  <small>₹{item.price}</small>
+                </div>
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={() => dispatch(removeFromWishlist(item.id))}
+                >
+                  &times;
+                </button>
+              </div>
+            ))
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowWishlist(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </header>
   );
 }

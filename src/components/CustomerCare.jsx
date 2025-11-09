@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  getAuth
+  getAuth, onAuthStateChanged
 } from "firebase/auth";
 import {
   getFirestore,
@@ -17,6 +17,8 @@ import {
 } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import axios from "axios";
+import Alert from "react-bootstrap/Alert";
+import Pagination from "react-bootstrap/Pagination";
 import "./styles/CustomerCare.css";
 
 const MAX_MESSAGE_LENGTH = 1000;
@@ -39,6 +41,7 @@ export default function CustomerCare() {
   const [enquiries, setEnquiries] = useState([]);
   const [fetchingEnquiries, setFetchingEnquiries] = useState(true);
   const [expandedId, setExpandedId] = useState(null);
+  const [alertMessage, setAlertMessage] = useState(false);
 
   // 🧩 Prefill logged-in user info
   useEffect(() => {
@@ -115,6 +118,7 @@ export default function CustomerCare() {
         deleted: 0,
       };
 
+
       await addDoc(collection(db, "mobileAppContactFormQueries"), formDetails);
 
       const res = await axios.post(
@@ -123,7 +127,7 @@ export default function CustomerCare() {
       );
 
       if (res.data.success) {
-        alert("✅ Your message has been sent. We'll get back to you soon!");
+        setAlertMessage(true);
         setForm({ ...form, message: "" });
       } else {
         alert("Something went wrong. Please try again later.");
@@ -183,20 +187,47 @@ export default function CustomerCare() {
     });
   }, [enquiries]);
 
+  // 📄 Pagination Setup
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 7;
+  const totalPages = Math.ceil(sortedEnquiries.length / itemsPerPage);
+
+  const currentItems = useMemo(() => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return sortedEnquiries.slice(startIndex, startIndex + itemsPerPage);
+  }, [sortedEnquiries, currentPage]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortedEnquiries]);
+
   return (
     <motion.div
-      className="orders-card"
+      className="accounts-card"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
       <div className="d-flex justify-content-between align-items-center">
         <h2>Previous Enquiries</h2>
-        <h2>Customer Care</h2>
+        <h2>Connect us Again</h2>
       </div>
+
       <div className="customer-care-card">
         {/* --- Contact Form --- */}
-        <form onSubmit={handleSubmit} noValidate className="ccform">
+        <form onSubmit={handleSubmit} noValidate className="ccform position-relative">
+          {loading && (
+            <div className="loader-div d-flex flex-column justify-content-center align-items-center">
+              <div className="loader"></div>
+              <div className="sending-loader"></div>
+            </div>
+          )}
+          {alertMessage && (
+            <Alert variant="success" className="d-flex justify-content-between">
+              Your message has been sent. We'll get back to you soon!{" "}
+              <i className="bi bi-x-lg" onClick={() => setAlertMessage(false)}></i>
+            </Alert>
+          )}
           <label>Message</label>
           <textarea
             rows="8"
@@ -221,116 +252,155 @@ export default function CustomerCare() {
         </form>
 
         {/* ---- Enquiry History Table ---- */}
-        <div className="enquiry-list mt-4">
+        <div className="enquiry-list">
           {fetchingEnquiries ? (
             <p>Loading enquiries...</p>
           ) : sortedEnquiries.length === 0 ? (
             <p className="no-orders">No previous enquiries found.</p>
           ) : (
             <div className="orders-table-container">
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Preview</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sortedEnquiries.map((enq) => {
-                    const date = enq.createdAt?.seconds
-                      ? new Date(enq.createdAt.seconds * 1000)
-                      : new Date();
-                    const formattedDate = date.toLocaleDateString();
-                    const formattedTime = date.toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    });
+              <AnimatePresence mode="wait">
+                <motion.table
+                  key={currentPage}
+                  className="orders-table"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Time</th>
+                      <th>Preview</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentItems.map((enq) => {
+                      const date = enq.createdAt?.seconds
+                        ? new Date(enq.createdAt.seconds * 1000)
+                        : new Date();
+                      const formattedDate = date.toLocaleDateString();
+                      const formattedTime = date.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      });
 
-                    const hasReply = !!enq.adminReply;
-                    const shortPreview =
-                      enq.message.length > 20
-                        ? enq.message.slice(0, 20) + "..."
-                        : enq.message;
+                      const hasReply = !!enq.adminReply;
+                      const shortPreview =
+                        enq.message.length > 20
+                          ? enq.message.slice(0, 20) + "..."
+                          : enq.message;
 
-                    return (
-                      <React.Fragment key={enq.id}>
-                        <tr
-                          className={`collapsible-row ${
-                            hasReply ? "highlight-replied" : ""
-                          }`}
-                          onClick={() =>
-                            setExpandedId(expandedId === enq.id ? null : enq.id)
-                          }
-                        >
-                          <td>{formattedDate}</td>
-                          <td>{formattedTime}</td>
-                          <td>{shortPreview}</td>
-                          <td>
-                            <span
-                              className={`status-chip ${
-                                hasReply ? "delivered" : "pending"
-                              }`}
-                            >
-                              {hasReply ? "replied" : "pending"}
-                            </span>
-                          </td>
-                        </tr>
+                      return (
+                        <React.Fragment key={enq.id}>
+                          <tr
+                            className={`collapsible-row ${hasReply ? "highlight-replied" : ""}`}
+                            onClick={() =>
+                              setExpandedId(expandedId === enq.id ? null : enq.id)
+                            }
+                          >
+                            <td>{formattedDate}</td>
+                            <td>{formattedTime}</td>
+                            <td>{shortPreview}</td>
+                            <td>
+                              <span
+                                className={`status-chip ${hasReply ? "delivered" : "pending"}`}
+                              >
+                                {hasReply ? "replied" : "pending"}
+                              </span>
+                            </td>
+                          </tr>
 
-                        <AnimatePresence>
-                          {expandedId === enq.id && (
-                            <motion.tr
-                              initial={{ opacity: 0, height: 0 }}
-                              animate={{ opacity: 1, height: "auto" }}
-                              exit={{ opacity: 0, height: 0 }}
-                              transition={{ duration: 0.3 }}
-                            >
-                              <td colSpan="4" className="expanded-message-cell">
-                                <div className="expanded-message">
-                                  <div className="user-message">
-                                    <p className="msg-label">You said:</p>
-                                    <div className="msg-bubble user-bubble">
-                                      {enq.message}
-                                    </div>
-                                    <small className="msg-time">
-                                      Sent on {formattedDate} at {formattedTime}
-                                    </small>
-                                  </div>
-
-                                  {hasReply ? (
-                                    <div className="admin-reply">
-                                      <p className="msg-label">
-                                        Support replied:
-                                      </p>
-                                      <div className="msg-bubble admin-bubble">
-                                        {enq.adminReply}
+                          <AnimatePresence>
+                            {expandedId === enq.id && (
+                              <motion.tr
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.3 }}
+                              >
+                                <td colSpan="4" className="expanded-message-cell">
+                                  <div className="expanded-message">
+                                    <div className="user-message">
+                                      <p className="msg-label">You said:</p>
+                                      <div className="msg-bubble user-bubble">
+                                        {enq.message}
                                       </div>
                                       <small className="msg-time">
-                                        {enq.adminReplyAt
-                                          ? `Replied on ${new Date(
-                                              enq.adminReplyAt.seconds * 1000
-                                            ).toLocaleDateString()}`
-                                          : ""}
+                                        Sent on {formattedDate} at {formattedTime}
                                       </small>
                                     </div>
-                                  ) : (
-                                    <div className="no-reply-msg">
-                                      <em>
-                                        Our support team will reply soon.
-                                      </em>
-                                    </div>
-                                  )}
-                                </div>
-                              </td>
-                            </motion.tr>
-                          )}
-                        </AnimatePresence>
-                      </React.Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
+
+                                    {hasReply ? (
+                                      <div className="admin-reply">
+                                        <p className="msg-label">Support replied:</p>
+                                        <div className="msg-bubble admin-bubble">
+                                          {enq.adminReply}
+                                        </div>
+                                        <small className="msg-time">
+                                          {enq.adminReplyAt
+                                            ? `Replied on ${new Date(
+                                              enq.adminReplyAt.seconds * 1000
+                                            ).toLocaleDateString()}`
+                                            : ""}
+                                        </small>
+                                      </div>
+                                    ) : (
+                                      <div className="no-reply-msg">
+                                        <em>Our support team will reply soon.</em>
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+                              </motion.tr>
+                            )}
+                          </AnimatePresence>
+                        </React.Fragment>
+                      );
+                    })}
+                  </tbody>
+                </motion.table>
+              </AnimatePresence>
+
+              {/* 🌟 Pagination Component */}
+              {totalPages > 1 && (
+                <motion.div
+                  className="d-flex justify-content-center mt-3"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <Pagination>
+                    <Pagination.First
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(1)}
+                    />
+                    <Pagination.Prev
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                    />
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <Pagination.Item
+                        key={i + 1}
+                        active={i + 1 === currentPage}
+                        onClick={() => setCurrentPage(i + 1)}
+                      >
+                        {i + 1}
+                      </Pagination.Item>
+                    ))}
+                    <Pagination.Next
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                    />
+                    <Pagination.Last
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage(totalPages)}
+                    />
+                  </Pagination>
+                </motion.div>
+              )}
             </div>
           )}
         </div>

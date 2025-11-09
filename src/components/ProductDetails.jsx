@@ -23,11 +23,24 @@ import {
 } from "../features/cartWishlistSlice";
 import "./styles/ProductDetails.css";
 import StarRating from "./StarRating";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function ProductDetails({ productId }) {
+export default function ProductDetails({ productId, shopCartAdded, shopCartRemoved }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+
+  const { cart, wishlist } = useSelector((state) => state.cartWishlist);
+  const q = () => {
+    const item = cart.find((p) => p.id === productId);
+    return item ? item.quantity : 1;
+  };
+  const inCart = cart.some((item) => item.id === productId);
+  const inWishlist = wishlist.some((item) => item.id === productId);
+
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(q);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("description");
   const [reviews, setReviews] = useState([]);
@@ -40,9 +53,6 @@ export default function ProductDetails({ productId }) {
   const auth = getAuth(app);
   const dispatch = useDispatch();
 
-  const { cart, wishlist } = useSelector((state) => state.cartWishlist);
-  const inCart = cart.some((item) => item.id === productId);
-  const inWishlist = wishlist.some((item) => item.id === productId);
 
   // 🔐 Listen to Auth state
   useEffect(() => {
@@ -101,8 +111,8 @@ export default function ProductDetails({ productId }) {
   const handleCart = () => {
     if (!product) return;
     inCart
-      ? dispatch(removeFromCart(product.id))
-      : dispatch(addToCart({ ...product, quantity }));
+      ? `${dispatch(removeFromCart(product.id))} ${shopCartAdded(false)} ${shopCartRemoved(true)}`
+      : `${dispatch(addToCart({ ...product, quantity }))} ${shopCartAdded(true)} ${shopCartRemoved(false)}`
   };
 
   const handleWishlist = () => {
@@ -139,8 +149,12 @@ export default function ProductDetails({ productId }) {
     }
   };
 
+  const handleLoginRedirect = () => {
+    navigate("/auth", { state: { from: location } });
+  };
 
-  if (loading) return <div className="loading">Loading product details...</div>;
+
+  if (loading) return <div className="loader-div d-flex flex-column justify-content-center align-items-center"><div className="loader"></div><div className="sending-loader"></div></div>;
   if (!product) return <div className="not-found">Product not found.</div>;
 
   return (
@@ -180,23 +194,29 @@ export default function ProductDetails({ productId }) {
 
           <div className="quantity-controls">
             <div className="cartlist">
-              <Button variant="light" onClick={decreaseQty}>
-                −
-              </Button>
-              <span>{quantity}</span>
-              <Button variant="light" onClick={increaseQty}>
-                ＋
-              </Button>
+              <div className="d-flex justify-content-center align-items-center">
+                <Button variant="light" onClick={decreaseQty}>
+                  −
+                </Button>
+                <span>{quantity}</span>
+                <Button variant="light" onClick={increaseQty}>
+                  ＋
+                </Button>
+              </div>
               <Button
-                variant={inCart ? "outline-dark" : "dark"}
+                variant={inCart ? "dark" : "dark"}
                 onClick={handleCart}
               >
-                {inCart ? "REMOVE FROM CART" : "ADD TO CART"}
+                {inCart ? <>
+                  Added <i className="bi bi-cart-dash"></i>
+                </> : <>
+                  Add to Cart <i className="bi bi-cart-plus"></i>
+                </>}
               </Button>
             </div>
 
             <Button
-              variant={inWishlist ? "outline-danger" : "light"}
+              variant={inWishlist ? "danger" : "danger"}
               className="wishlist"
               onClick={handleWishlist}
             >
@@ -256,14 +276,15 @@ export default function ProductDetails({ productId }) {
                 reviews.map((r) => (
                   <div key={r.id} className="review-card">
                     <div className="review-header">
-                      <strong>{r.userName || "Anonymous"}</strong>
+                      <strong>{r.name || "Anonymous"}</strong>
                       {r.rating && (
                         <span className="rating">
-                          {"⭐".repeat(r.rating)} ({r.rating})
+                          {"⭐".repeat(r.rating)} {' '}
+                          <strong style={{ color: '#000' }}>({r.rating})</strong>
                         </span>
                       )}
                     </div>
-                    <p className="review-text">{r.comment}</p>
+                    <p className="review-text">{r.review}</p>
                     {r.createdAt?.seconds && (
                       <small className="review-date">
                         {new Date(
@@ -311,7 +332,7 @@ export default function ProductDetails({ productId }) {
                 </Form>
               ) : (
                 <p className="text-muted mt-3">
-                  🔒 Please log in to submit a review.
+                  🔒 Please <strong onClick={handleLoginRedirect}>Sign In</strong> to submit a review.
                 </p>
               )}
             </div>

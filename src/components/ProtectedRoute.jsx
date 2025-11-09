@@ -1,19 +1,16 @@
-// src/components/ProtectedRoute.jsx
-import { useSelector } from "react-redux";
+// src/routes/ProtectedRoute.jsx
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useSelector((state) => state.user);
+export default function ProtectedRoute({ children }) {
+  const { user } = useSelector((s) => s.user);
   const location = useLocation();
 
-  if (loading) return <div>Loading...</div>;
 
   if (!user) {
-    // Redirect to login and remember where the user came from
-    return <Navigate to="/auth" replace state={{ from: location }} />;
+    // 🚀 Pass the "from" location so Authorization knows where to return
+    return <Navigate to="/auth" state={{ from: location }} replace />;
   }
 
   return children;
-};
-
-export default ProtectedRoute;
+}

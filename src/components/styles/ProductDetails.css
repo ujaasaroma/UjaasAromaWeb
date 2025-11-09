@@ -29,8 +29,7 @@
 .thumbnail {
   width: 90px;
   height: 90px;
-  object-fit: cover;
-  border: 1px solid #ddd;
+  object-fit: contain;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -43,12 +42,16 @@
 
 .main-image {
   position: relative;
+  width: 450px;
+  height: 450px;
+  overflow-y: hidden;
+  scrollbar-width: none;
 }
 
 .main-image img {
   width: 450px;
   height: 450px;
-  object-fit: cover;
+  object-fit: center;
   border-radius: 10px;
 }
 
@@ -117,13 +120,17 @@
 
 .cartlist {
   display: flex;
-  width: 50%;
-  justify-content: space-around;
+  width: 60%;
+  justify-content: space-between;
   align-items: center;
+}
+.cartlist>button{
+  width: 150px;
 }
 
 .wishlist {
   float: right;
+  width: 185px;
 }
 
 

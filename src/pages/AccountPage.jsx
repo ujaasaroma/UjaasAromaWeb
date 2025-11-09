@@ -1,13 +1,13 @@
 import Footer from "../components/Footer";
 import Header from "../components/Header";
-import Profile from "../components/Profile";
 import Reveal from "../components/Reveal";
+import Accounts from "../components/Accounts";
 
-export default function ProfilePage() {
+export default function AccountPage() {
     return (
         <>
-            <Header bg="#f9fafc"/>
-            <Reveal><Profile /></Reveal>
+            <Header bg="#f9fafc" />
+            <Reveal><Accounts /></Reveal>
             <Reveal><Footer /></Reveal>
         </>
     )

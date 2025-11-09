@@ -14,9 +14,9 @@
 .profile-card {
   background: #fff;
   border-radius: 20px;
-  width: 20%;
-  height: auto;
-  max-height: 800px;
+  width: 365px;
+  height: 650px;
+  max-height: 650px;
   padding: 2rem 2rem 2.5rem;
   text-align: center;
   position: relative;
@@ -52,7 +52,7 @@
 .profile-email {
   color: #666;
   font-size: 0.9rem;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
   display: flex;
   align-items: center;
   justify-content: start;
@@ -131,8 +131,8 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   width: 78%;
   padding: 2rem 2.5rem 5rem;
-  height: auto;
-  max-height: 800px;
+  height: 650px;
+  max-height: 650px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
@@ -148,6 +148,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   padding: 0 0 10px;
   font-family: "Inter", sans-serif;
+  height: 500px;
 }
 
 .orders-table {
@@ -210,9 +211,9 @@
   text-transform: capitalize;
 }
 
-.status-chip.pending {
+.status-chip.processing {
   background-color: rgba(245, 158, 11, 0.15);
-  color: #d97706;
+  color: #c56f0c;
   border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
@@ -289,9 +290,9 @@
 }
 
 .modal-content {
-  border-radius: 18px !important;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  border: none;
+  border-radius: 10px!important;
+  padding: 25px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 .modal-header {
@@ -333,10 +334,30 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-
+  
 }
 
 .sorted-buttons>button>text {
+  font-size: 11px;
+}
+
+.wishlist-sorted-buttons {
+  width: 100%;
+  column-gap: 10px;
+}
+
+.wishlist-sorted-buttons>button {
+  border-radius: 120px;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 125px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  
+}
+
+.wishlist-sorted-buttons>button>text {
   font-size: 11px;
 }
 
@@ -399,7 +420,7 @@
 
 .profile-menu .menu-item.logout {
   margin-top: 0.5rem;
-  color: #c0392b;
+  color: coral;
   font-weight: 600;
 }
 

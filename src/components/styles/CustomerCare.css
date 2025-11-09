@@ -1,14 +1,45 @@
+.accounts-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: 78%;
+  padding: 2rem 2.5rem 1.5rem;
+  height: 650px;
+  max-height: 650px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+
 /* 🌿 Customer Care Form & Layout */
 .customer-care-card {
-  /* background: #000; */
+  background: #fff;
   border-radius: 14px;
-  padding: 0 28px;
+  padding: 30px 28px;
   transition: all 0.3s ease;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
   align-items: flex-start;
   width: 100%;
+}
+
+.ccform {
+  border-radius: 10px;
+  padding: 28px;
+  height: 495px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.alert-success {
+  color: #000000 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+.alert-success>i {
+  cursor: pointer;
+  font-weight: 700;
+  color: #000 !important;
 }
 
 .orders-card h2 {
@@ -49,6 +80,7 @@
   border-color: #000;
   background-color: #fff;
 }
+
 
 .char-counter {
   font-size: 12px;
@@ -106,6 +138,7 @@
 /* 🧾 Enquiry Table Styles */
 .enquiry-list {
   width: 48%;
+  border-radius: 10px;
 }
 
 .enquiry-list h4 {
@@ -118,7 +151,9 @@
 .orders-table-container {
   overflow-y: auto;
   z-index: 9999999999999;
-  height: 400px;
+  max-height: 500px;
+  padding: 5px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 .orders-table {
@@ -130,6 +165,7 @@
 .orders-table thead {
   background-color: #f7f7f7;
 }
+
 
 .orders-table th {
   font-weight: 600;
@@ -238,7 +274,7 @@
   color: #fff;
   align-self: flex-start;
   border: 1px solid #000;
-  
+
   width: 52%;
 }
 
