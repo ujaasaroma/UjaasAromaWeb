@@ -5,6 +5,7 @@ import userReducer from "../features/userSlice";
 import ordersReducer from "../features/ordersSlice";
 import enquiriesReducer from "../features/enquiriesSlice";
 import shippingAddressesReducer from "../features/shippingSlice";
+import profileReducer from "../features/profileSlice";
 
 
 const persistedCartWishlist = (() => {
@@ -26,6 +27,7 @@ export const store = configureStore({
     orders: ordersReducer,
     enquiries: enquiriesReducer,
     shippingAddresses: shippingAddressesReducer,
+    profile: profileReducer,
   },
   preloadedState: persistedCartWishlist
     ? { cartWishlist: persistedCartWishlist }

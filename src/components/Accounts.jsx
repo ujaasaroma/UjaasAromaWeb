@@ -1,64 +1,92 @@
 // src/pages/Accounts.jsx
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
-import { getApp } from "firebase/app";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Button, Modal, Form, Image } from "react-bootstrap";
 import { logoutUser } from "../features/userSlice";
-import "./styles/Accounts.css";
-import "./styles/AccountSkeleton.css";
+import {
+  listenToUserProfile,
+  updateUserProfile,
+  clearProfile,
+} from "../features/profileSlice";
 import MyOrders from "./MyOrders";
 import CustomerCare from "./CustomerCare";
 import Wishlist from "./Wishlist";
 import ShippingAddresses from "./shippingAddresses";
+import "./styles/Accounts.css";
+import "./styles/AccountSkeleton.css";
 
 export default function Accounts() {
   const { user } = useSelector((state) => state.user);
-  const db = getFirestore(getApp());
+  const { data: profile, status } = useSelector((s) => s.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [link, setLink] = useState('my-orders');
+  const [link, setLink] = useState("my-orders");
 
-  const [profile, setProfile] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    photoURL: "",
-  });
-  const [loading, setLoading] = useState(true);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({ name: "", phone: "" });
+  const [newPhotoFile, setNewPhotoFile] = useState(null);
+  const [previewPhoto, setPreviewPhoto] = useState(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (!user?.uid) return;
-        const ref = doc(db, "users", user.uid);
-        const snap = await getDoc(ref);
-        if (snap.exists()) setProfile(snap.data());
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, [user]);
+    if (user?.uid) {
+      dispatch(listenToUserProfile(user.uid));
+    }
+    return () => dispatch(clearProfile());
+  }, [user, dispatch]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/");
   };
 
-  if (loading) {
+  const openEditModal = () => {
+    setEditForm({
+      name: profile.name || "",
+      phone: profile.phone || "",
+    });
+    setPreviewPhoto(profile.photoURL || null);
+    setShowEditModal(true);
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewPhotoFile(file);
+      setPreviewPhoto(URL.createObjectURL(file));
+    }
+  };
+
+  const handleSaveProfile = async () => {
+    if (!user?.uid) return;
+    setSaving(true);
+    try {
+      await dispatch(
+        updateUserProfile({
+          uid: user.uid,
+          name: editForm.name.trim(),
+          phone: editForm.phone.trim(),
+          newPhotoFile,
+        })
+      );
+      setShowEditModal(false);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (status === "loading" || status === "idle") {
     return (
       <div className="profile-skeleton-container">
-        {/* Left Profile Card */}
         <div className="profile-skeleton-card">
           <div className="skeleton skeleton-photo" />
           <div className="skeleton skeleton-name" />
           <div className="skeleton skeleton-email" />
           <div className="skeleton skeleton-phone" />
-
           <div className="skeleton skeleton-btn primary" />
           <div className="skeleton skeleton-btn secondary" />
         </div>
@@ -75,52 +103,64 @@ export default function Accounts() {
     >
       {/* ---- Profile Card ---- */}
       <div className="profile-card">
-        <div className="d-flex justify-content-between align-items-center gap-1">
+        <div className="profile-section">
           <div className="profile-image-section">
             <img
               src={
                 profile.photoURL ||
                 "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
               }
-              alt="Display Picture"
+              alt="Profile"
               className="profile-avatar"
             />
           </div>
-          <div
-            className="d-flex flex-column justify-content-center align-items-start"
-            style={{ height: 80, marginBottom: "1rem" }}
-          >
-            <h3 className="profile-name">{profile.name}</h3>
-            <small className="profile-id">{user.uid}</small>
+          <div className="profile-details-section">
+            <span className="profile-email">
+              <i className="bi bi-person"></i>: {profile.name}
+            </span>
+            <span className="profile-email">
+              <i className="bi bi-envelope"></i>: {profile.email}
+            </span>
+            {profile.phone && (
+              <span className="profile-phone">
+                <i className="bi bi-telephone"></i>: {profile.phone}
+              </span>
+            )}
           </div>
-        </div>
-
-        <div className="d-flex flex-column justify-content-between align-items-start p-2">
-          <p className="profile-email">
-            <i className="bi bi-envelope"></i>{' '}E-mail: {profile.email}</p>
-          {profile.phone && <p className="profile-phone">
-            <i className="bi bi-telephone"></i>{' '}Phone: {profile.phone}</p>}
+          <Button
+            className="profile-edit-btn"
+            variant="link"
+            onClick={openEditModal}
+          >
+            <i className="bi bi-pencil"></i>
+          </Button>
         </div>
 
         {/* ---- Sidebar Menu ---- */}
         <div className="profile-sidebar">
           <ul className="profile-menu">
-            <li className={`menu-item ${link === 'my-orders' && 'active'}`} onClick={() => setLink('my-orders')}>
+            <li
+              className={`menu-item ${link === "my-orders" && "active"}`}
+              onClick={() => setLink("my-orders")}
+            >
               <i className="bi bi-file-earmark-text"></i> My Orders
             </li>
-            <li className={`menu-item ${link === 'ccare' && 'active'}`} onClick={() => setLink('ccare')}>
+            <li
+              className={`menu-item ${link === "ccare" && "active"}`}
+              onClick={() => setLink("ccare")}
+            >
               <i className="bi bi-headset"></i> Customer Care
             </li>
-            <li className={`menu-item ${link === 'scards' && 'active'}`} onClick={() => setLink('scards')}>
-              <i className="bi bi-credit-card"></i> Saved Cards
-            </li>
-            <li className={`menu-item ${link === 'saddresses' && 'active'}`} onClick={() => setLink('saddresses')}>
+            <li
+              className={`menu-item ${link === "saddresses" && "active"}`}
+              onClick={() => setLink("saddresses")}
+            >
               <i className="bi bi-pin-map"></i> Addresses
             </li>
-            {/* <li className={`menu-item ${link === 'gcards' && 'active'}`} onClick={() => setLink('gcards')}>
-              <i className="bi bi-gift"></i> Gift Cards
-            </li> */}
-            <li className={`menu-item ${link === 'wishlist' && 'active'}`} onClick={() => setLink('wishlist')}>
+            <li
+              className={`menu-item ${link === "wishlist" && "active"}`}
+              onClick={() => setLink("wishlist")}
+            >
               <i className="bi bi-heart"></i> Wishlist
             </li>
             <li className="menu-item logout" onClick={handleLogout}>
@@ -129,7 +169,87 @@ export default function Accounts() {
           </ul>
         </div>
       </div>
-      {link === "my-orders" ? <MyOrders /> : link === "ccare" ? <CustomerCare /> : link === "saddresses" ? <ShippingAddresses /> : link === "wishlist" ? <Wishlist /> : ''}
+
+      {/* ---- Dynamic Page ---- */}
+      {link === "my-orders" ? (
+        <MyOrders />
+      ) : link === "ccare" ? (
+        <CustomerCare />
+      ) : link === "saddresses" ? (
+        <ShippingAddresses />
+      ) : link === "wishlist" ? (
+        <Wishlist />
+      ) : (
+        ""
+      )}
+
+      {/* ---- Edit Profile Modal ---- */}
+      <Modal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        centered
+        size="md"
+        backdrop="static"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <div className="d-flex flex-column align-items-center mb-3">
+              <Image
+                src={
+                  previewPhoto ||
+                  profile.photoURL ||
+                  "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+                }
+                roundedCircle
+                width={150}
+                className="mb-2 "
+              />
+              <Form.Label className="text-muted small">
+                Change Profile Picture
+              </Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoChange}
+                style={{ maxWidth: 250 }}
+              />
+            </div>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                value={editForm.name}
+                onChange={(e) =>
+                  setEditForm((p) => ({ ...p, name: e.target.value }))
+                }
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Phone</Form.Label>
+              <Form.Control
+                type="text"
+                value={editForm.phone}
+                onChange={(e) =>
+                  setEditForm((p) => ({ ...p, phone: e.target.value }))
+                }
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowEditModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="dark" disabled={saving} onClick={handleSaveProfile}>
+            {saving ? "Saving..." : "Save Changes"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </motion.div>
   );
 }

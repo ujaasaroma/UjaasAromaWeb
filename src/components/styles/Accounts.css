@@ -15,21 +15,58 @@
   background: #fff;
   border-radius: 20px;
   width: 365px;
-  height: 650px;
+  /* height: 650px; */
   max-height: 650px;
-  padding: 2rem 2rem 2.5rem;
+  padding: 2rem 1.5rem 2.5rem;
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  row-gap: 40px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
-.profile-image-section {
-  margin-bottom: 1rem;
-  width: 30%;
+.profile-section {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   height: 80px;
+  width: 100%;
+}
+
+.profile-image-section {
+  height: 80px;
+  width: 26%;
   overflow-y: auto;
   scrollbar-width: none;
-  border-radius: 15px;
+  z-index: 999999999999;
+}
+
+.profile-details-section {
+  height: 100%;
+  width: 66%;
+  margin-left: 10px;
+  padding: 5px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.profile-edit-btn {
+  height: 100% !important;
+  width: 7%!important;
+  border-radius: 0 !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.profile-edit-btn>i{
+  font-size: 18px;
+  color: #000;
+}
+.profile-edit-btn>i:hover{
+  color: red;
 }
 
 .profile-avatar {
@@ -51,22 +88,22 @@
 
 .profile-email {
   color: #666;
-  font-size: 0.9rem;
-  margin: 0.5rem 0;
+  font-size: 0.7rem;
+  /* margin: 0.5rem 0; */
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 10px;
+  gap: 5px;
 }
 
 .profile-phone {
   color: #777;
-  font-size: 0.9rem;
-  margin-bottom: 1.5rem;
+  font-size: 0.7rem;
+  /* margin-bottom: 1.5rem; */
   display: flex;
   align-items: center;
   justify-content: start;
-  gap: 10px;
+  gap: 5px;
 }
 
 .status-row {
@@ -290,7 +327,7 @@
 }
 
 .modal-content {
-  border-radius: 10px!important;
+  border-radius: 10px !important;
   padding: 25px;
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
@@ -334,7 +371,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  
+
 }
 
 .sorted-buttons>button>text {
@@ -354,7 +391,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-  
+
 }
 
 .wishlist-sorted-buttons>button>text {
