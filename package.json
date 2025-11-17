@@ -1,13 +1,16 @@
 {
   "name": "ujaasaroma",
+  "homepage": "https://ujaasaroma.github.io/UjaasAromaWeb",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
@@ -17,6 +20,7 @@
     "cropperjs": "^2.1.0",
     "firebase": "^12.2.1",
     "framer-motion": "^12.23.24",
+    "gh-pages": "^6.3.0",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
