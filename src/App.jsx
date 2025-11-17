@@ -26,7 +26,7 @@ function App() {
     dispatch(listenToAuthChanges());
   }, [dispatch]);
   return (
-    <Router>
+    <Router basename="/UjaasAromaWeb">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />
