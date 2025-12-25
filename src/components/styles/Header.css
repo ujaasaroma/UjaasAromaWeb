@@ -276,4 +276,6 @@
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
+    text-decoration: none;
+    color: #ea8c8e;
 }
