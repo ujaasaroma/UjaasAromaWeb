@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "ujaas-aroma"
+    "default": "ujaas-aroma",
+    "kraftsnknots default": "kraftsnknots-921a0"
   },
   "targets": {},
   "etags": {}
