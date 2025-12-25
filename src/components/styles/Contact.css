@@ -157,14 +157,18 @@
 
 /* Responsive */
 @media (max-width: 900px) {
+  .b-red {
+    border: 1px solid red;
+  }
+
   .contact-hero {
     flex-direction: column;
     padding: 60px 8%;
   }
 
-  .contact-info,
   .contact-form {
-    flex: 1 1 100%;
+    width: 100%;
+    padding: 7px;
   }
 
   .location-details {

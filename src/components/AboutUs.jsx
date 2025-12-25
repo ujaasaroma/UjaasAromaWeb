@@ -21,7 +21,7 @@ export default function AboutUs() {
 
         <div className="about-hero-image">
           <div className="image-container">
-            <img src={ringImage} alt="Scented candles" />
+            <img src={ringImage} alt="Scented candles" className="ringImage"/>
             <div className="stats-card">
               <div>
                 <h3>900+</h3>

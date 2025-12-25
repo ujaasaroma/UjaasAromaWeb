@@ -192,3 +192,80 @@
     height: 300px;
   }
 }
+
+@media (max-width: 600px) {
+  .b-red {
+    border: 1px solid red;
+  }
+
+  .about-page {
+    padding: 0;
+  }
+
+  .about-hero {
+    margin: 0;
+    padding: 50px 0 0 !important;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+
+  .about-hero-text {
+    padding: 0 30px;
+  }
+
+  .about-hero-text>h2 {
+    font-size: 25px;
+  }
+
+  .about-hero-text>h1 {
+    font-size: 35px;
+  }
+
+  .about-hero-text>p {
+    text-align: justify;
+  }
+
+  .about-hero-image {
+    width: 100% !important;
+    padding: 20px;
+  }
+
+  .ringImage {
+    width: 100% !important;
+    height: 400px !important;
+  }
+
+  .stats-card {
+    position: absolute;
+    left: 7.5%;
+    width: 85%;
+  }
+
+  .stats-card>div>h3 {
+    font-size: 16px;
+  }
+
+  .stats-card>div>p {
+    font-size: 10px;
+  }
+
+  .divider {
+    width: 40px!important;
+    height: 2px!important;
+  }
+  .location-section{
+    width: 100%;
+    padding: 25px 25px 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    text-align: center;
+    gap: 100px;
+  }
+  .location-text>p{
+    text-align: justify;
+  }
+  .location-map{
+    margin-bottom: 50px;
+  }
+}
