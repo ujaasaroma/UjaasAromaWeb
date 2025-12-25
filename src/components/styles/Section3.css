@@ -1,5 +1,6 @@
 .section3-row{
     background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%);
+    /* background: #ffffff; */
 }
 .section3-col {
     flex-direction: row;
@@ -88,7 +89,7 @@
     margin-top: 100px;
 }
 
-@media screen and (max-width: 425px) {
+@media screen and (max-width: 900px) {
     .section3-col {
         flex-direction: column;
         gap: 20px;
