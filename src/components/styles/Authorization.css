@@ -11,7 +11,7 @@
 
 .glass-card {
   background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px); 
   border-radius: 20px;
   padding: 2.5rem;
   width: 500px;
@@ -113,9 +113,10 @@ button[type="submit"]:hover {
 @media (max-width: 768px) {
   .dual-auth-wrapper {
     flex-direction: column;
+    padding: 1rem;
   }
   .glass-card {
-    width: 90%;
-    max-width: 360px;
+    width: 100%;
+    /* max-width: 360px; */
   }
 }

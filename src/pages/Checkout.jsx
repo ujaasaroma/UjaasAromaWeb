@@ -27,7 +27,7 @@ import {
     serverTimestamp,
     getDoc,
     doc,
-    updateDoc,
+    updateDoc, 
     runTransaction,
     setDoc,
 } from "firebase/firestore";
@@ -773,14 +773,14 @@ export default function Checkout() {
                                         </div>
 
                                         {/* TERMS */}
-                                        <div className="section-block">
+                                        <div className="section-block term-check">
                                             <Form.Check
                                                 className="terms-check"
                                                 type="checkbox"
-                                                label="I agree to the Terms & Conditions and Privacy Policy."
                                                 checked={agreed}
                                                 onChange={(e) => setAgreed(e.target.checked)}
                                             />
+                                            <small>I agree to the Terms & Conditions and Privacy Policy.</small>
                                         </div>
 
                                         {/* CONTINUE BTN */}
@@ -789,6 +789,7 @@ export default function Checkout() {
                                                 variant="dark"
                                                 className="step-primary-btn"
                                                 onClick={handleContinueToPayment}
+                                                disabled={agreed ? false : true}
                                             >
                                                 Next
                                             </Button>

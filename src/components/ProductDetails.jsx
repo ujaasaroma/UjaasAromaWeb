@@ -183,9 +183,11 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
         <div className="details">
           <h1 className="title">{product.title}</h1>
           <h3 className="subtitle">{product.subtitle}</h3>
-          {/* {product.discountPrice ? } */}
-          <p className="price"><small className="line-through danger">₹{product.price || product.options?.[0]?.price}</small> ₹{product.discountPrice || product.options?.[0]?.price}</p>
-
+          {product.discountPrice ?
+            <p className="price"><small className="line-through danger">₹{product.price || product.options?.[0]?.price}</small> ₹{product.discountPrice || product.options?.[0]?.price}</p>
+            :
+            <p className="price"><small>₹{product.price || product.options?.[0]?.price}</small></p>
+          }
           <div className="description">
             <p>
               {product.description ||

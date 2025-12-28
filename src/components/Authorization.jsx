@@ -113,7 +113,7 @@ export default function Authorization({ lastPage }) {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="auth-header">
+              <div className="auth-header"> 
                 <h2>Welcome Back 👋</h2>
                 <p>Sign in to continue exploring our unique and adorable collection.</p>
               </div>
