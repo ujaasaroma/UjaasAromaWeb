@@ -94,7 +94,7 @@ export default function PaymentSuccess() {
 
       <Container className="ps-container py-5">
         <Row className="justify-content-center">
-          <Col md={10} lg={7}>
+          <Col md={10} lg={10}>
             <Card className="ps-card p-4 p-md-5">
 
               {/* Success Icon */}

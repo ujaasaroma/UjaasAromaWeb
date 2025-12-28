@@ -325,7 +325,7 @@ export default function Checkout() {
             return newNum;
         });
 
-        return `#UA${next}`;
+        return `#K&K${next}`;
     };
 
     // ================================
@@ -367,7 +367,7 @@ export default function Checkout() {
             const orderNumber = await getNextOrderNumber();
 
             const response = await axios.post(
-                "https://us-central1-ujaas-aroma.cloudfunctions.net/createRazorpayOrder",
+                "https://us-central1-kraftsnknots-921a0.cloudfunctions.net/createRazorpayOrder",
                 { amount: total, receipt: `receipt_web_${Date.now()}` }
             );
 
@@ -380,7 +380,7 @@ export default function Checkout() {
                 name: "Ujaas Aroma",
                 description: "Payment for your order",
                 image:
-                    "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.appspot.com/o/logos%2FPicture1.png?alt=media",
+                    "https://firebasestorage.googleapis.com/v0/b/kraftsnknots-921a0.appspot.com/o/logos%2FPicture1.png?alt=media",
                 order_id: order.id,
                 prefill: {
                     name: customerInfo.name,
@@ -431,7 +431,7 @@ export default function Checkout() {
                         });
 
                         const invoiceRes = await axios.post(
-                            "https://us-central1-ujaas-aroma.cloudfunctions.net/generateInvoicePDF",
+                            "https://us-central1-kraftsnknots-921a0.cloudfunctions.net/generateInvoicePDF",
                             { orderDetails: { ...safeOrderDetails, orderNumber } }
                         );
 
@@ -444,7 +444,7 @@ export default function Checkout() {
                         }
 
                         await axios.post(
-                            "https://us-central1-ujaas-aroma.cloudfunctions.net/sendOrderConfirmation",
+                            "https://us-central1-kraftsnknots-921a0.cloudfunctions.net/sendOrderConfirmation",
                             { orderDetails: { ...safeOrderDetails, invoiceUrl: pdfUrl } }
                         );
 
