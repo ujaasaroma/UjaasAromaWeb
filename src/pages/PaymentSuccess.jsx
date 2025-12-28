@@ -149,7 +149,7 @@ export default function PaymentSuccess() {
                   <tbody>
                     {order.cartItems?.map((item, index) => (
                       <tr key={index} className="ps-item-row">
-                        <td>
+                        <td className="success-items-title">
                           <strong>{item.title}</strong>
                           {item.options?.length > 0 && (
                             <div className="ps-options">
@@ -159,9 +159,9 @@ export default function PaymentSuccess() {
                             </div>
                           )}
                         </td>
-                        <td>₹ {item.price}</td>
-                        <td>Qty: {item.quantity}</td>
-                        <td className="text-end">
+                        <td className="success-items-price">₹ {item.price}</td>
+                        <td className="success-items-qty">Qty: {item.quantity}</td>
+                        <td className="text-end success-items-total">
                           ₹ {(item.price * item.quantity).toFixed(2)}
                         </td>
                       </tr>
